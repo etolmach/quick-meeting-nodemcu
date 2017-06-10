@@ -30,11 +30,13 @@
 #define LCD_WIDTH 16
 #define LCD_HEIGHT 2
 
-#define ROOM_NAME "CHI-REU309"
-#define FIRST_HOME_LINE  "   CHI-REU309   "
-#define BOOKED_MMESSAGE  " Booked 15 mins "
-#define BUSY_MESSAGE     " Room is BUSY ! "
-#define CANCELLED_MESAGE "  Cancelled !   "
+// LCD messages
+// Note that the message length should be equal to LCD_WITDTH
+#define ROOM_NAME_MESSAGE     "   CHI-REU309   "
+#define BOOKED_MESSAGE        " Booked 15 mins "
+#define BUSY_MESSAGE          " Room is BUSY ! "
+#define CANCELLED_MESAGE      "  Cancelled !   "
+#define NETWORK_ERROR_MESSAGE " Network error! "
 
 #define WIFI_SSID "Orange Airbox-A281"
 #define WIFI_PASS "22506919"
@@ -42,5 +44,9 @@
 #define SERVER_HOST "http://virtserver.swaggerhub.com"
 
 #define DEBUG 1
+
+// Count of loops until home page refresh
+#define HOME_PAGE_REFRESH_LOOPS 1000
+#define HOME_PAGE_REFRESH_DELAY 100
 
 #endif
