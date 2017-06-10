@@ -30,11 +30,32 @@
 #define LCD_WIDTH 16
 #define LCD_HEIGHT 2
 
-#define ROOM_NAME "CHI-REU309"
-#define FIRST_HOME_LINE  "   CHI-REU309   "
-#define BOOKED_MMESSAGE  " Booked 15 mins "
-#define BUSY_MESSAGE     " Room is BUSY ! "
-#define CANCELLED_MESAGE "  Cancelled !   "
+// WiFi settings
+#define WIFI_SSID "foo-bar-ssid"
+#define WIFI_PASSWORD "foo-bar-paswd"
 
+#define HTTP_HOST "virtserver.swaggerhub.com"
+#define HTTP_PORT 80
+#define HTTP_RESERVATION_PATH "/sbleihp5/QuickMeeting/1.0.0/quick-meeting/CHI-REU309/"
+
+const int HTTP_RESERVATION_SUCCESSFUL = 200;
+const int HTTP_RESEVATION_CANCELLED = 400;
+const int HTTP_RESEVATION_DENIED = 423;
+const int HTTP_ERROR = 500;
+const int HTTP_NETWORK_ERROR = -1;
+
+// LCD messages
+// Note that the message length should be equal to LCD_WITDTH
+#define ROOM_NAME_MESSAGE     "   CHI-REU309   "
+#define BOOKED_MMESSAGE       " Booked 15 mins "
+#define BUSY_MESSAGE          " Room is BUSY ! "
+#define CANCELLED_MESAGE      "  Cancelled !   "
+#define NETWORK_ERROR_MESSAGE " Network error! "
+
+#define ROOM_NAME "CHI-REU309"
+
+// Count of loops until home page refresh
+#define HOME_PAGE_REFRESH_LOOPS 1000
+#define HOME_PAGE_REFRESH_DELAY 100
 
 #endif

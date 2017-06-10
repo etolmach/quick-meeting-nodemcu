@@ -4,6 +4,9 @@
    @project QuickMeeting
 */
 
+#ifndef QmSerialLogger_h
+#define QmSerialLogger_h
+
 #include <Arduino.h>
 
 class QmSerialLogger {
@@ -15,3 +18,4 @@ class QmSerialLogger {
     void booked(String uid);
 };
 
+#endif

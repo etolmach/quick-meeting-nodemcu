@@ -16,8 +16,6 @@ void QmLcdDisplay::init(int sdaPin, int sclPin, int width, int height) {
   __lcd.backlight();
 }
 
-
-
 void QmLcdDisplay::clear() {
   __lcd.clear();
 }

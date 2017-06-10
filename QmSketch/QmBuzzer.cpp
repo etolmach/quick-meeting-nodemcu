@@ -3,8 +3,6 @@
 */
 
 #include "QmBuzzer.h"
-#include "QmConfigs.h"
-
 QmBuzzer::QmBuzzer() {}
 
 void QmBuzzer::init(int pin) {
