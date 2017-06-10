@@ -8,7 +8,6 @@
 #define QmBuzzer_h
 
 #include <Arduino.h>
-#include "QmConfigs.h"
 
 class QmBuzzer {
   private:
