@@ -1,6 +1,5 @@
 /**
   QuickMeeting main sketch
-
   @project QuickMeeting
 */
 
@@ -20,7 +19,7 @@ QmBuzzer buzzer;
 QmRelay relay;
 QmLcdDisplay lcd;
 QmRfid rfid;
-QmWebClient webClient;
+QmWebClient webClient = QmWebClient(SERVER_HOST, logger);
 
 void setup() {
   Serial.begin(SERIAL_BAUDRATE);
@@ -31,14 +30,17 @@ void setup() {
   relay.init(RELAY_PIN);
   rfid.init(RFID_SS_PIN, RFID_RST_PIN);
   lcd.init(LCD_SDA_PIN, LCD_SCL_PIN, LCD_WIDTH, LCD_HEIGHT);
-  webClient.init(WIFI_SSID, WIFI_PASSWORD);
+  webClient.init(WIFI_SSID, WIFI_PASS);
   
+  logger.debug("Connecting to WiFi");
   while (!webClient.isConnected()) {
     // TODO:
     // do something while waiting for connection
     // e.g. log something
+    logger.debug(".");
     delay(200);
   }
+  logger.debugln("done");
   buzzer.success();
 }
 
@@ -63,27 +65,27 @@ void loop() {
   refreshHomePage();
   if (rfid.isCard()) {
     String uid = rfid.readUid();
-    int result = webClient.attemptReservation(uid);
+    int result = webClient.attemptReservation("chi-reu209", uid);
     switch (result) {
-      case HTTP_RESERVATION_SUCCESSFUL:
+      case ROOM_BOOKING_SUCCESSFUL:
         logger.booked(uid);
-        lcd.print(1, BOOKED_MMESSAGE);
+        lcd.print(1, BOOKED_MESSAGE);
         buzzer.success();
         relay.switchOn();
         break;
-      case HTTP_RESEVATION_DENIED:
+      case ROOM_BOOKING_DENIED:
         logger.cannotBook(uid);
         lcd.print(1, BUSY_MESSAGE);
         buzzer.error();
         break;
-      case HTTP_RESEVATION_CANCELLED:
+      case ROOM_CANCEL_MEETING_SUCCESSFUL:
         logger.cancelledMeeting(uid);
         lcd.print(1, CANCELLED_MESAGE);
         buzzer.cancel();
         relay.switchOff();
         break;
-      case HTTP_ERROR:
-      case HTTP_NETWORK_ERROR:
+      case ROOM_BOOKING_NETWORK_ERROR:
+      case ROOM_BOOKING_ERROR:
         // TODO:
         // Log an error message
         // lcd.print(1, NETWORK_ERROR_MESSAGE);
@@ -91,5 +93,4 @@ void loop() {
         break;
     }
   }
-
 }

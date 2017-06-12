@@ -12,6 +12,8 @@
 class QmSerialLogger {
   public:
     QmSerialLogger();
+    void debug(String message);
+    void debugln(String message);
     void logAction(String uid, String message);
     void cancelledMeeting(String uid);
     void cannotBook(String uid);
@@ -19,3 +21,4 @@ class QmSerialLogger {
 };
 
 #endif
+

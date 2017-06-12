@@ -1,7 +1,11 @@
 #include "QmWebClient.h"
 #include <ESP8266WiFi.h>
+#include <ESP8266HTTPClient.h>
 
-QmWebClient::QmWebClient() {}
+QmWebClient::QmWebClient(String host, QmSerialLogger logger) {
+  this->host = host;
+  this->logger = logger;
+}
 
 /**
    Setup QmWebClient by initializyng WiFi connection
@@ -16,56 +20,76 @@ boolean QmWebClient::isConnected() {
 }
 
 /**
-   Sends a http request, returns http code or -1 in case of error
-*/
-int QmWebClient::httpRequest(const char* host, const int port, const char* method, String path) {
-  Serial.print("Trying to connecto to ");
-  Serial.println(host);
+ *  Attempts a resevation for predefined room and user UUID
+ *
+ * -1 ROOM_BOOKING_ERROR
+ * 1 ROOM_BOOKING_SUCCESSFUL
+ * 2 ROOM_BOOKING_DENIED
+ * 3 ROOM_CANCEL_MEETING_SUCCESSFUL
+ * 4 ROOM_CANCEL_MEETING_DENIED
+ */
+int QmWebClient::attemptReservation(String roomId, String RFID) {
+      // prepare and execute request
+      logger.debugln("preparing request");
+      HTTPClient http;
+      http.begin(host + "/sbleihp5/QuickMeeting/1.0.0/meeting/" + roomId + "/" + RFID);
+      int httpCode = http.GET();
+      http.end();
 
-  // use WiFiClient to create TCP connection
-  WiFiClient client;
-  if (!client.connect(host, port)) {
-    Serial.println("connection failed");
-    return -1;
-  }
+      // httpCode will be negative on error
+      if(httpCode > 0) {
+          logger.debug("got http code: ");
+          logger.debugln(String(httpCode));
+          switch (httpCode) {
+            case HTTP_CODE_OK:
+              return ROOM_BOOKING_SUCCESSFUL;
+            case HTTP_CODE_LOCKED:
+              return ROOM_BOOKING_DENIED;
+            case HTTP_CODE_ACCEPTED:
+              return ROOM_CANCEL_MEETING_SUCCESSFUL;
+            case HTTP_CODE_FORBIDDEN:
+              return ROOM_CANCEL_MEETING_DENIED;
+            default:
+              return ROOM_BOOKING_ERROR;
+          }
 
-  Serial.println(String("Sending request: ") + method + " " + host + path);
-
-  // preparing http request
-  String request =
-    String("") + method + " " + path + " HTTP/1.1\r\n" +
-    "Host: " + host + "\r\n" +
-    "Connection: close\r\n\r\n";
-
-  // send the request to the server
-  client.print(request);
-
-  unsigned long timeout = millis();
-  while (client.available() == 0) {
-    if (millis() - timeout > 5000) {
-      Serial.println(">>> Client Timeout !");
-      client.stop();
-      return -1;
-    }
-  }
-
-  String line = client.readStringUntil('\r\n');
-  Serial.print("Received response headers: ");
-  Serial.println(line);
-
-
-  int firstSpaceAt = line.indexOf(' ');
-  int secondSpaceAt = line.indexOf(' ', firstSpaceAt + 1);
-  String responseCode = line.substring(firstSpaceAt + 1, secondSpaceAt);
-
-  return responseCode.toInt();
+          return httpCode;
+      } else {
+          logger.debug("request failed with error code: ");
+          logger.debugln(String(httpCode));
+          http.end();
+          
+          return ROOM_BOOKING_ERROR;
+      }
 }
 
-/**
-   Attempts a resevation for predefined room and user UUID
-   Returns http code or -1 on error
-*/
-int QmWebClient::attemptReservation(String uid) {
-  String path = String(HTTP_RESERVATION_PATH) + uid;
-  return httpRequest(HTTP_HOST, HTTP_PORT, "GET", path);
+int QmWebClient::checkStatus(String roomId) {
+      // prepare and execute request
+      logger.debugln("preparing request");
+      HTTPClient http;
+      http.begin(host + "/sbleihp5/QuickMeeting/1.0.0/status/" + roomId);
+      int httpCode = http.GET();
+      http.end();
+
+      // httpCode will be negative on error
+      if(httpCode > 0) {
+          logger.debug("got http code: ");
+          logger.debugln(String(httpCode));
+          switch (httpCode) {
+            case HTTP_CODE_OK:
+              return ROOM_BOOKING_SUCCESSFUL;
+            case HTTP_CODE_LOCKED:
+              return ROOM_BOOKING_DENIED;
+            default:
+              return ROOM_BOOKING_ERROR;
+          }
+
+          return httpCode;
+      } else {
+          logger.debug("request failed with error code: ");
+          logger.debugln(String(httpCode));
+          http.end();
+          
+          return ROOM_BOOKING_ERROR;
+      }
 }
