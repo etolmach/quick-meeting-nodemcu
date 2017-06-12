@@ -9,12 +9,14 @@
 
 #include <Arduino.h>
 #include <MFRC522.h>
+#include "QmSerialLogger.h"
 
 class QmRfid {
   private:
     MFRC522* mfrc522;
+    QmSerialLogger logger;
   public:
-    QmRfid();
+    QmRfid(QmSerialLogger logger);
     void init(int ssPin, int rstPin);
     
     boolean isCard();

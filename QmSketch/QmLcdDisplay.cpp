@@ -7,13 +7,23 @@
 
 LiquidCrystal_I2C __lcd(0x27, 16, 2);
 
-QmLcdDisplay::QmLcdDisplay() {}
+QmLcdDisplay::QmLcdDisplay(QmSerialLogger logger) {
+  this->logger = logger;
+}
 
 void QmLcdDisplay::init(int sdaPin, int sclPin, int width, int height) {
+  logger.debugln("Initializing LCD display...");
+  logger.debugParam("sdaPin", sdaPin);
+  logger.debugParam("sclPin", sclPin);
+  logger.debugParam("width", width);
+  logger.debugParam("height", height);
+
   Wire.begin(sdaPin, sclPin);
   __lcd = LiquidCrystal_I2C(0x27, width, height);
   __lcd.begin(width, height);
   __lcd.backlight();
+
+  logger.debugln("Done.\n");
 }
 
 void QmLcdDisplay::clear() {

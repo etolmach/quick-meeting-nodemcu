@@ -32,16 +32,18 @@
 
 // LCD messages
 // Note that the message length should be equal to LCD_WITDTH
-#define ROOM_NAME_MESSAGE     "   CHI-REU309   "
+#define ROOM_NAME_MESSAGE     "   CHI-REU105   "
 #define BOOKED_MESSAGE        " Booked 15 mins "
 #define BUSY_MESSAGE          " Room is BUSY ! "
 #define CANCELLED_MESAGE      "  Cancelled !   "
 #define NETWORK_ERROR_MESSAGE " Network error! "
 
-#define WIFI_SSID "Orange Airbox-A281"
-#define WIFI_PASS "22506919"
+// WiFi settings
+#define WIFI_SSID "..."
+#define WIFI_PASS "..."
 
-#define SERVER_HOST "http://virtserver.swaggerhub.com"
+
+#define SERVER_HOST "http://10.187.5.72/api/meeting/chi_reu105/"
 
 #define DEBUG 1
 

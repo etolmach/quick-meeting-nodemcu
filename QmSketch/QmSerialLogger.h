@@ -10,14 +10,14 @@
 #include <Arduino.h>
 
 class QmSerialLogger {
+  private:
+    void debugParamPrefix(String name);
   public:
     QmSerialLogger();
     void debug(String message);
     void debugln(String message);
-    void logAction(String uid, String message);
-    void cancelledMeeting(String uid);
-    void cannotBook(String uid);
-    void booked(String uid);
+    void debugParam(String name, String value);
+    void debugParam(String name, int value);
 };
 
 #endif

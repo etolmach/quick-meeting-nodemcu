@@ -27,7 +27,7 @@ class QmWebClient {
     void init(const char* ssid, const char* password);
 
     boolean isConnected();
-    int attemptReservation(String roomId, String uid);
+    int attemptReservation(String uid);
     int checkStatus(String roomId);
 };
 

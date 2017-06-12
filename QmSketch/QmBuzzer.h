@@ -8,12 +8,14 @@
 #define QmBuzzer_h
 
 #include <Arduino.h>
+#include "QmSerialLogger.h"
 
 class QmBuzzer {
   private:
     int buzzerPin;
+    QmSerialLogger logger;
   public:
-    QmBuzzer();
+    QmBuzzer(QmSerialLogger logger);
     void init(int buzzerPin);
 
     void buzz(int milliseconds, int buzzerPin);
@@ -22,7 +24,6 @@ class QmBuzzer {
     void success();
     void error();
     void cancel();
-    void longBuzz();
 };
 
 #endif

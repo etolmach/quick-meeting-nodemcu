@@ -1,6 +1,8 @@
 #include "QmRelay.h"
 
-QmRelay::QmRelay() {}
+QmRelay::QmRelay(QmSerialLogger logger) {
+  this->logger = logger;
+}
 
 void QmRelay::init(int pin) {
   controlPin = pin;

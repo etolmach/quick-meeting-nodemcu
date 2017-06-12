@@ -5,11 +5,18 @@
 #include "QmBuzzer.h"
 #include "QmConfigs.h"
 
-QmBuzzer::QmBuzzer() {}
+QmBuzzer::QmBuzzer(QmSerialLogger logger) {
+  this->logger = logger;
+}
 
 void QmBuzzer::init(int pin) {
+  logger.debugln("Initializing buzzer...");
+  logger.debugParam("pin", pin);
+  
   this->buzzerPin = pin;
   pinMode(pin, OUTPUT);
+
+  logger.debugln("Done.\n");
 }
 
 void QmBuzzer::buzz(int milliseconds, int pin) {

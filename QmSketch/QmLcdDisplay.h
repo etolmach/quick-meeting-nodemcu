@@ -8,10 +8,13 @@
 #define QmLcdDisplay_h
 
 #include <Arduino.h>
+#include "QmSerialLogger.h"
 
 class QmLcdDisplay {
+  private:
+    QmSerialLogger logger;
   public:
-    QmLcdDisplay();
+    QmLcdDisplay(QmSerialLogger logger);
     void init(int sdaPin, int sclPin, int width, int height);
 
     void clear();

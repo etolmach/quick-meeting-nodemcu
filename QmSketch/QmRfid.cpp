@@ -1,14 +1,27 @@
 #include "QmRfid.h"
 
-QmRfid::QmRfid() {}
+QmRfid::QmRfid(QmSerialLogger logger) {
+  this->logger = logger;
+}
 
 void QmRfid::init(int ssPin, int rstPin) {
+  logger.debugln("Initializing RFID reader...");
+  logger.debugParam("ssPin", ssPin);
+  logger.debugParam("rstPin", rstPin);
+
   mfrc522 = new MFRC522(ssPin, rstPin);
   mfrc522->PCD_Init();
+
+  logger.debugln("Done.\n");
 }
 
 boolean QmRfid::isCard() {
-  return mfrc522->PICC_IsNewCardPresent() && mfrc522->PICC_ReadCardSerial();
+  if(mfrc522->PICC_IsNewCardPresent() && mfrc522->PICC_ReadCardSerial()){
+    logger.debugln("\nRFID reader detected a card:");
+    logger.debugParam("UUID", readUid());
+    return true;
+  }
+  return false;
 }
 
 String QmRfid::readUid() {

@@ -3,32 +3,35 @@
 
 QmSerialLogger::QmSerialLogger() {}
 
-void QmSerialLogger::logAction(String uid, String message) {
-  Serial.print(uid);
-  Serial.print(" ");
-  Serial.println(message);
-}
 
 void QmSerialLogger::debug(String message) {
-  #ifdef DEBUG
+#ifdef DEBUG
   Serial.print(message);
-  #endif
+#endif
 }
 
 void QmSerialLogger::debugln(String message) {
-  #ifdef DEBUG
+#ifdef DEBUG
   Serial.println(message);
-  #endif
+#endif
 }
 
-void QmSerialLogger::cancelledMeeting(String uid) {
-  QmSerialLogger::logAction(uid, "cancelled meeting.");
+void QmSerialLogger::debugParamPrefix(String name) {
+  Serial.print("   ");
+  Serial.print(name);
+  Serial.print(" = ");
 }
 
-void QmSerialLogger::cannotBook(String uid) {
-  QmSerialLogger::logAction(uid, "cannot book already booked room!");
+void QmSerialLogger::debugParam(String name, String value) {
+#ifdef DEBUG
+  debugParamPrefix(name);
+  Serial.println(value);
+#endif
 }
 
-void QmSerialLogger::booked(String uid) {
-  QmSerialLogger::logAction(uid, "booked 15 minutes.");
+void QmSerialLogger::debugParam(String name, int value) {
+#ifdef DEBUG
+  debugParamPrefix(name);
+  Serial.println(value);
+#endif
 }
