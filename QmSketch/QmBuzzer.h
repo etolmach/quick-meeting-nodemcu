@@ -8,14 +8,14 @@
 #define QmBuzzer_h
 
 #include <Arduino.h>
-#include "QmSerialLogger.h"
+#include "QmLogger.h"
+#include "QmComponent.h"
 
-class QmBuzzer {
+class QmBuzzer : QmComponent {
   private:
     int buzzerPin;
-    QmSerialLogger logger;
   public:
-    QmBuzzer(QmSerialLogger logger);
+    QmBuzzer(QmLogger logger);
     void init(int buzzerPin);
 
     void buzz(int milliseconds, int buzzerPin);

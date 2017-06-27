@@ -1,12 +1,16 @@
 #include "QmRelay.h"
 
-QmRelay::QmRelay(QmSerialLogger logger) {
-  this->logger = logger;
+QmRelay::QmRelay(QmLogger logger) : QmComponent(logger) {
 }
 
 void QmRelay::init(int pin) {
-  controlPin = pin;
+  logger.debugln("Initializing relay...");
+  logger.debugParam("pin", pin);
+  
+  this->controlPin = pin;
   pinMode(pin, OUTPUT);
+
+  logger.debugln("Done.\n");
 }
 
 void QmRelay::switchOn() {

@@ -5,8 +5,7 @@
 #include "QmBuzzer.h"
 #include "QmConfigs.h"
 
-QmBuzzer::QmBuzzer(QmSerialLogger logger) {
-  this->logger = logger;
+QmBuzzer::QmBuzzer(QmLogger logger) : QmComponent(logger) {
 }
 
 void QmBuzzer::init(int pin) {

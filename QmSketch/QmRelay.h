@@ -8,14 +8,14 @@
 #define QmRelay_h
 
 #include <Arduino.h>
-#include "QmSerialLogger.h"
+#include "QmLogger.h"
+#include "QmComponent.h"
 
-class QmRelay {
+class QmRelay : QmComponent {
   private:
     int controlPin;
-    QmSerialLogger logger;
   public:
-    QmRelay(QmSerialLogger logger);
+    QmRelay(QmLogger logger);
     void init(int controlPin);
 
     void switchOn();

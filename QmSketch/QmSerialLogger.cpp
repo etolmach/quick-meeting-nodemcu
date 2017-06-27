@@ -1,37 +1,41 @@
-#include "QmSerialLogger.h"
+#include "QmLogger.h"
 #include "QmConfigs.h"
 
-QmSerialLogger::QmSerialLogger() {}
+QmLogger::QmLogger() {
+#ifndef BEGIN_SERIAL_CONNECTION
+#define BEGIN_SERIAL_CONNECTION
+  Serial.begin(SERIAL_BAUDRATE);
+#endif
+}
 
-
-void QmSerialLogger::debug(String message) {
+void QmLogger::debug(String message) {
 #ifdef DEBUG
   Serial.print(message);
 #endif
 }
 
-void QmSerialLogger::debugln(String message) {
+void QmLogger::debugln(String message) {
 #ifdef DEBUG
   Serial.println(message);
 #endif
 }
 
-void QmSerialLogger::debugParamPrefix(String name) {
+void __debugParamPrefix(String name) {
   Serial.print("   ");
   Serial.print(name);
   Serial.print(" = ");
 }
 
-void QmSerialLogger::debugParam(String name, String value) {
+void QmLogger::debugParam(String name, String value) {
 #ifdef DEBUG
-  debugParamPrefix(name);
+  __debugParamPrefix(name);
   Serial.println(value);
 #endif
 }
 
-void QmSerialLogger::debugParam(String name, int value) {
+void QmLogger::debugParam(String name, int value) {
 #ifdef DEBUG
-  debugParamPrefix(name);
+  __debugParamPrefix(name);
   Serial.println(value);
 #endif
 }

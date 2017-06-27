@@ -7,8 +7,7 @@
 
 LiquidCrystal_I2C __lcd(0x27, 16, 2);
 
-QmLcdDisplay::QmLcdDisplay(QmSerialLogger logger) {
-  this->logger = logger;
+QmLcdDisplay::QmLcdDisplay(QmLogger logger) : QmComponent(logger) {
 }
 
 void QmLcdDisplay::init(int sdaPin, int sclPin, int width, int height) {

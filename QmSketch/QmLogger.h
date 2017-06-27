@@ -1,19 +1,17 @@
 /**
-   Serial logger
+   Logger
 
    @project QuickMeeting
 */
 
-#ifndef QmSerialLogger_h
-#define QmSerialLogger_h
+#ifndef QmLogger_h
+#define QmLogger_h
 
 #include <Arduino.h>
 
-class QmSerialLogger {
-  private:
-    void debugParamPrefix(String name);
+class QmLogger {
   public:
-    QmSerialLogger();
+    QmLogger();
     void debug(String message);
     void debugln(String message);
     void debugParam(String name, String value);

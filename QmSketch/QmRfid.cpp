@@ -1,7 +1,7 @@
 #include "QmRfid.h"
 
-QmRfid::QmRfid(QmSerialLogger logger) {
-  this->logger = logger;
+QmRfid::QmRfid(QmLogger logger) : QmComponent(logger) {
+
 }
 
 void QmRfid::init(int ssPin, int rstPin) {

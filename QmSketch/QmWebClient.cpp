@@ -1,10 +1,12 @@
 #include "QmWebClient.h"
+
+#ifndef MOCK_WEB_CLIENT
+
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
 
-QmWebClient::QmWebClient(String host, QmSerialLogger logger) {
+QmWebClient::QmWebClient(String host, QmLogger logger) : QmComponent(logger) {
   this->host = host;
-  this->logger = logger;
 }
 
 /**
@@ -42,7 +44,7 @@ int QmWebClient::attemptReservation(String RFID) {
   // prepare and execute request
   logger.debugln("preparing request");
   HTTPClient http;
-  http.begin(host+ RFID);
+  http.begin(host + RFID);
   int httpCode = http.GET();
   http.end();
 
@@ -62,7 +64,6 @@ int QmWebClient::attemptReservation(String RFID) {
       default:
         return ROOM_BOOKING_ERROR;
     }
-
     return httpCode;
   } else {
     logger.debug("request failed with error code: ");
@@ -103,3 +104,5 @@ int QmWebClient::checkStatus(String roomId) {
     return ROOM_BOOKING_ERROR;
   }
 }
+
+#endif
